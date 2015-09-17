@@ -1,28 +1,30 @@
- //declare bacteria variables here   
- Bacteria [] platoon;
+ //declare bacteria variables here
+Bacteria [] platoon;
  void setup()   
  {     
  	size(500,500);
  	platoon = new Bacteria[10];
- 	for(int i = 1; i <= platoon.length; i++) {
+ 	for(int i = 0; i < platoon.length; i++) {
 
  		int a = 1;
  		int b = 1;
 
  		a += 1;
- 		if (a <= 5) {
+ 		if (a == 5) {
  			a = 1;
  			b += 1;
  		}
 
- 		int x = (a*50) + 25;
- 		int y = (b*50) + 25;
- 		platoon[i] = new Bacteria(x, y, 10);
+ 		int x = (a*50);
+ 		int y = (b*50);
+ 		platoon[i] = new Bacteria(x, y, 5);
  	}
  	//initialize bacteria variables here   
  }   
  void draw()   
  {    
+ 	fill(255,255,255,30);
+ 	rect(0,0,500,500);
  	for (int i = 0; i < platoon.length; i++) {
  		platoon[i].move();
  		platoon[i].show();
@@ -39,6 +41,8 @@
 	int endInterval = 10;
 
 	int randomD;
+
+	int barrier = 500;
 
 	boolean bias = false;
 
@@ -58,25 +62,53 @@
  		}
  		else {
  			if(startInterval == endInterval) {
- 				startInterval = 0;
- 				randomD = (int)(Math.random()*4);
+ 				resetDirection();
  			}
  			else {
 	 			if (randomD == 0) {
-	 				y += speed;
+	 				if(y > barrier) {
+	 					resetDirection();
+	 					y = barrier;
+	 				}
+	 				else {
+	 					y += speed;
+	 				}
 	 			}
 	 			else if (randomD == 1) {
-	 				x += speed;
+	 				if(x > barrier){
+	 					resetDirection();
+	 					x = barrier;
+	 				}
+	 				else {
+	 					x += speed;
+	 				}
 	 			}
 	 			else if (randomD == 2) {
-	 				y -= speed;
+	 				if(y < 0) {
+	 					resetDirection();
+	 					y = 0;
+	 				}
+	 				else {
+	 					y -= speed;
+	 				}
 	 			}
 	 			else if (randomD == 3) {
-	 				x -= speed;
+	 				if(x < 0) {
+	 					resetDirection();
+	 					x = 0;
+	 				}
+	 				else {
+	 					x -= speed;
+	 				}
 	 			}
 	 			startInterval += 1;
  			}
  		}
+ 	}
+
+ 	void resetDirection() {
+		startInterval = 0;
+		randomD = (int)(Math.random()*4);
  	}
 
  	void show() {
